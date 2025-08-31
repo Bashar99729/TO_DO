@@ -39,8 +39,6 @@ class AddToDoProvider with ChangeNotifier {
   Future<void>editHabit({required String id,
    }) async{
 
-    final index=_habits.indexWhere((h)=>h.id==id);
-  final habit=_habits[index];
 
 
   }

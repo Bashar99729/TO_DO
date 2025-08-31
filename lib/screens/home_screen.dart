@@ -142,7 +142,7 @@ Widget _listHabits(BuildContext context,Habit h,AddToDoProvider prov){
           ),
 
           title: Text('${h.title} (${h.duration.inHours}h ${h.duration.inMinutes%60}m)'),
-          subtitle: Text('${h.duration}\n${h.notes}'),
+          subtitle: Text('${h.dateTime}\n${h.notes}'),
           trailing: IconButton(
             onPressed: () {
               prov.removeHabit(h.id);
