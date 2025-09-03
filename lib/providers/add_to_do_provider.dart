@@ -36,8 +36,12 @@ class AddToDoProvider with ChangeNotifier {
     await _saveHabits(_habitsKey, habits, (Habit e) => e.toJson());
     notifyListeners();
   }
-  Future<void>editHabit({required String id,
-   }) async{
+  Future<void>editHabit(Habit h) async{
+    final index=_habits.indexWhere((e)=>e.id==h.id);
+    removeHabit(index.toString());
+    _habits[index]=h;
+    await _saveHabits(_habitsKey, habits, (Habit e)=>e.toJson());
+    notifyListeners();
 
 
 

@@ -4,25 +4,42 @@ import '../models/habit.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:localstorage/localstorage.dart';
+import '../models/habit.dart';
 
-class AddToDo extends StatefulWidget {
+
+class EditScreen extends StatefulWidget {
+  EditScreen(this.id);
+  String id;
+
+
 
   @override
-  State<AddToDo> createState() => _AddToDoState();
+  State<EditScreen> createState() => _EditScreenState(id);
 }
 
-class _AddToDoState extends State<AddToDo> {
+class _EditScreenState extends State<EditScreen> {
+  _EditScreenState(this.id);
+  String id;
   final _habitTitle = TextEditingController();
   final _notes = TextEditingController();
   Duration _duration = Duration(hours: 0, minutes: 0);
   DateTime _dateTime = DateTime.now();
+
   @override
   void dispose() {
     // TODO: implement dispose
     _habitTitle.dispose();
     _notes.dispose();
     super.dispose();
+
   }
+  @override
+  void initState() {
+    // TODO: implement initState
+    selectHabit();
+    super.initState();
+  }
+
 
   Future<void> _pickDate() async {
     final d = await showDatePicker(
@@ -45,9 +62,15 @@ class _AddToDoState extends State<AddToDo> {
       });
     }
   }
-  void editHabit(){
-
+  void selectHabit (){
+    final index=context.read<AddToDoProvider>().habits.indexWhere((e)=>e.id==id);
+    final habit=context.read<AddToDoProvider>().habits[index];
+    _habitTitle.text=habit.title;
+    _notes.text=habit.notes;
+    _dateTime=habit.dateTime;
+    _duration=habit.duration;
   }
+
 
 
   void _save() {
@@ -65,13 +88,13 @@ class _AddToDoState extends State<AddToDo> {
     }
 
     final habit = Habit(
-      id: DateTime.now().microsecondsSinceEpoch.toString(),
+      id: id,
       title: _habitTitle.text,
       dateTime: _dateTime,
       duration: _duration,
       notes: _notes.text,
     );
-    context.read<AddToDoProvider>().addHabit(habit);
+    context.read<AddToDoProvider>().editHabit(habit);
     Navigator.pop(context);
   }
 
@@ -79,7 +102,7 @@ class _AddToDoState extends State<AddToDo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add to do', style: TextStyle(color: Colors.white)),
+        title: Text('Edit to do', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue.shade700,
       ),
       body: Padding(
@@ -111,7 +134,7 @@ class _AddToDoState extends State<AddToDo> {
             ),
             SizedBox(height: 10),
             ElevatedButton(onPressed: _save
-                , child: Text('save')
+                , child: Text('save edit')
             ),
           ],
         ),

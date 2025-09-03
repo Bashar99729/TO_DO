@@ -3,7 +3,7 @@ import 'package:to_do/models/habit.dart';
 import 'add_to_do.dart';
 import 'package:provider/provider.dart';
 import '../providers/add_to_do_provider.dart';
-
+import '../screens/edit_screen.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -134,6 +134,9 @@ Widget _listHabits(BuildContext context,Habit h,AddToDoProvider prov){
         child: ListTile(
 
           onTap: () {
+
+            // final index=context.read<AddToDoProvider>().habits.indexed;
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>EditScreen(h.id)));
           },
           leading: IconButton(
             onPressed: (){prov.habitsIsCompleted(h.id);
